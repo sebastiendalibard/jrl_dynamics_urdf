@@ -24,8 +24,8 @@ jrl-mal:
 abstract-robot-dynamics:
   ubuntu:
     source:
-#      uri: 'https://raw.github.com/laas/redundant_manipulator_control/master/abstract-robot-dynamics.rdmanifest'
-      uri: 'file:///home/sdalibar/ros_workspace/redundant_manipulator_control/abstract-robot-dynamics.rdmanifest'
+      uri: 'https://raw.github.com/laas/redundant_manipulator_control/master/abstract-robot-dynamics.rdmanifest'
+      
 
 jrl-dynamics:
   ubuntu:
