@@ -82,10 +82,25 @@ namespace jrl
 
 	/// \brief Parse an URDF file and return a humanoid robot.
 	CjrlHumanoidDynamicRobot*
+	buildFromFile (const std::string& filename,
+		       const std::string& rootJointName);
+
+	// Kept for backward compatibility
+	CjrlHumanoidDynamicRobot*
 	parse (const std::string& filename,
 	       const std::string& rootJointName);
 
+	CjrlDynamicRobot*
+	buildFromXmlString (const std::string& xmlString,
+			    const std::string& rootJointName);
+
+
+
       protected:
+
+	void
+	buildJrlModel(const std::string& rootJointName);
+
 	void
 	parseActuatedJoints (const std::string rootJointName);
 

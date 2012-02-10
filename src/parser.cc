@@ -145,22 +145,13 @@ namespace jrl
 
       Parser::~Parser ()
       {}
-
-      CjrlHumanoidDynamicRobot*
-      Parser::parse (const std::string& filename,
-		     const std::string& rootJointName)
+      
+      void
+      Parser::buildJrlModel(const std::string& rootJointName)
       {
-	// Reset the attributes to avoid problems when loading
-	// multiple robots using the same object.
-	model_.clear ();
 	robot_ = factory_.createHumanoidDynamicRobot ();
 	rootJoint_ = 0;
 	jointsMap_.clear ();
-
-	// Parse urdf model.
-	if (!model_.initFile (filename))
-	  throw std::runtime_error ("failed to open URDF file."
-				    " Is the filename location correct?");
 
 	// Look for actuated joints into the urdf model tree.
 	parseActuatedJoints (rootJointName);
@@ -205,7 +196,49 @@ namespace jrl
 
 	//FIXME: disabled for now as jrl-dynamics anchor support is buggy.
 	robot_->initialize();
+      }
+
+
+      CjrlHumanoidDynamicRobot*
+      Parser::buildFromFile (const std::string& filename,
+			     const std::string& rootJointName)
+      {
+	// Reset the attributes to avoid problems when loading
+	// multiple robots using the same object.
+	model_.clear ();
+
+	// Parse urdf model.
+	if (!model_.initFile (filename))
+	  throw std::runtime_error ("failed to open URDF file."
+				    " Is the filename location correct?");
+
+	buildJrlModel(rootJointName);
+
 	return robot_;
+      }
+
+      CjrlDynamicRobot*
+      Parser::buildFromXmlString (const std::string& xmlString,
+				  const std::string& rootJointName)
+      {
+	// Reset the attributes to avoid problems when loading
+	// multiple robots using the same object.
+	model_.clear ();
+
+	// Parse urdf model.
+	if (!model_.initString (xmlString))
+	  throw std::runtime_error ("failed to load robot from xml String");
+
+	buildJrlModel(rootJointName);
+
+	return robot_;
+      }
+
+      CjrlHumanoidDynamicRobot*
+      Parser::parse(const std::string& filename,
+		    const std::string& rootJointName)
+      {
+	return buildFromFile(filename,rootJointName);
       }
 
       void
